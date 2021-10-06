@@ -27,11 +27,12 @@ public class NoteServlet extends HttpServlet {
         content = br.readLine();
         
         request.setAttribute("Title", title);
+        request.setAttribute("Content", content);
         
         System.out.print(title);
         
         // load up a JSP
-        getServletContext().getRequestDispatcher("/WEB-INF/viewnote.jsp").forward(request,response);
+        getServletContext().getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request,response);
         return;
         
     }
@@ -41,6 +42,9 @@ public class NoteServlet extends HttpServlet {
             throws ServletException, IOException {
         //to write to the file
        // PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path, false)));
+       
+       getServletContext().getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request,response);
+        return;
     }
 
 

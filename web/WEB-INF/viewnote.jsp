@@ -17,7 +17,7 @@
         <br>
         <h3>Title: ${Title}</h3>
         <br>
-        <h3>Contents:</h3>
+        <h3>Contents: ${Content}</h3>
         <br>
         <a href="note?edit">Edit</a>
     </body>
