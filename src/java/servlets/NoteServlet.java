@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Note;
 
 public class NoteServlet extends HttpServlet {
 
@@ -13,36 +14,49 @@ public class NoteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        String a = request.getQueryString();
+        System.out.println("This is the query string: " + a);
+        
         //read the txt file
         String path = getServletContext().getRealPath("/WEB-INF/note.txt");
         
         //to read file
         BufferedReader br = new BufferedReader(new FileReader(new File(path)));
         
-        String title = "";
-        String content = "";
-        
         //read first line
-        title = br.readLine();
-        content = br.readLine();
+        String title = br.readLine();
+        String content = br.readLine();
         
-        request.setAttribute("Title", title);
-        request.setAttribute("Content", content);
+        Note note = new Note(title,content);
         
-        System.out.print(title);
+        request.setAttribute("Title", note.getTitle());
+        request.setAttribute("Content", note.getContent());
         
-        // load up a JSP
-        getServletContext().getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request,response);
-        return;
-        
+        if (a == null) {
+            getServletContext().getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request,response);
+        return; 
+        }else if(a == "") {
+            getServletContext().getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request,response);
+        return; 
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        //read the txt file
+        String path = getServletContext().getRealPath("/WEB-INF/note.txt");
         //to write to the file
-       // PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path, false)));
+        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path, false)));
        
+        String writeTitles = request.getParameter("Title");
+        String writeContents = request.getParameter("Content");
+        
+        pw.write(writeTitles);
+        pw.write(writeContents);
+        
+        
        getServletContext().getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request,response);
         return;
     }
